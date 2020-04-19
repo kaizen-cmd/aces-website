@@ -1,0 +1,193 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeStrike</title>
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<style>
+  html ::-webkit-scrollbar {
+    display: none;
+  }
+
+  .jumbo {
+    margin: 0 auto; width: 70%; text-align:center;
+  }
+
+  .jumbo1 {
+    margin: 0 auto; width: 70%;
+  }
+
+  .nav-item {
+    padding: 0 30px;
+  }
+
+    .navbar-brand img {
+        width:70px;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #wel-img {
+      width: 350px;
+    }
+
+  @media screen and (max-width: 900px) {
+    .jumbo {
+      width: 85%;
+    }
+    .jumbo1 {
+      width: 85%;
+    }
+
+    #wel-img {
+      width: 250px;
+    }
+  }
+</style>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><img src="{% static 'codestrikelogo.png' %}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/aboutus">About us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/discussion">Forum</a>
+        </li>
+        <li class="nav-item">
+          <a href="../blog/posts" class="nav-link">Blog</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="accounts/logout">Log Out</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="accounts/login">Log In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../admin">Admin</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+  <br>
+  <br>
+
+  <div class = "jumbo">
+    <div class="jumbotron" style="box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);">
+      <img id="wel-img" src="{% static 'codestrikelogo.png' %}">
+      <br>
+      <br>
+      {% if user.is_authenticated %}
+      <h3>Hello, {{user.first_name}}</h3>
+      <h4 class="lead">Head over to the editor and solve the problem.</h4>
+      <a href="submitsolution">
+        <h5>Editor -></h5>
+        <br>
+        <a href="blog/posts/winners_codestrike"><h4 class="lead">Previous Winners</h4></a>
+      </a>
+      {% else %}
+      <h4 class="lead">{{hp.description | safe}}</h4>
+      <a href="accounts/register" class="btn btn-md btn-primary" role="button">Sign up now!</a>
+      <br><br>
+      <a href="blog/posts/winners_codestrike"><h4 class="lead">Previous Winners</h4></a>
+      {% endif %}
+      <hr class="my-4">
+      <h5>Read the rules below</h5>
+    </div>
+  </div>
+
+  <div class="jumbo1">
+    <div class="jumbotron" style="box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);">
+      <div style="text-align: center;">
+        <h1 class="display-4">Rules</h1>
+      </div>
+      <br>
+      <h5 class="lead">{{hp.rules | safe}}</h5>
+      <hr class="my-4">
+      <div style="text-align: center;">
+        <h5>For queries head over to the contacts tab.</h5>
+        <br>
+        <a class="btn btn-primary btn-lg" href="/aboutus" role="button">About us</a>
+      </div>
+
+    </div>
+
+    <br>
+    {% if user.is_authenticated %}
+
+    <div style="text-align: center;">
+      <a href="submitsolution">
+        <h5>Go to this week's problem statement</h5>
+      </a>
+      <br>
+      <br>
+      <br>
+      <div style="text-align: center;">
+        <a class="btn btn-primary btn-lg" href="accounts/logout" role="button">Logout</a>
+      </div>
+    </div>
+
+    {% else %}
+    <div style="text-align: center;">
+      <a class="btn btn-primary btn-lg" href="accounts/login" role="button">Login</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <br><br>
+
+  <footer style="background-color: black; text-align:center;">
+    <br>
+    <h6 style="color: white;"><a href="https://linkedin.com/in/tejasmandre"
+        style="text-decoration: none; color: white;">© Tejas Mandre MIT SOE</a></h6>
+    <br>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
+  <script>
+    var navbar  = document.querySelector('nav');
+    window.addEventListener("resize", function () {
+        var w = document.documentElement.clientWidth;
+        if(w < 900) {
+            navbar.classList.add('sticky-top');
+        }
+        else {
+            navbar.classList.remove('sticky-top');
+        }
+    })
+    </script>
+
+</body>
+
+</html>

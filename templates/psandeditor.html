@@ -1,0 +1,352 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+<title>Editor Code Strike</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<style>
+
+  html ::-webkit-scrollbar {
+    display: none;
+  }
+
+  #parent {
+    width:80%;
+    height: 500px;
+    display:block;
+    position:relative;
+    margin-right: auto;
+    margin-left: auto;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+#editor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+h3 {
+    white-space: pre-wrap;
+}
+
+.navbar-brand img {
+        width:70px;
+        margin: 0px;
+        padding: 0px;
+    }
+
+#output {
+    text-align: left;
+    background:#eeeeee;
+    border:1px solid #cccccc;
+    width: 70%;
+    display:block;
+    position:relative;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+pre {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#menu-logo {
+  display: block;
+}
+
+#tick-img {
+  display: none;
+  margin-left: 5px;
+}
+
+img {
+    display: none;
+    width: 3%;
+    position: relative;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0px;
+}
+
+  .nav-item {
+    padding: 0 40px;
+  }
+</style>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><img src="{% static 'aceslogo.png' %}" id="menu-logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/aboutus">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/discussion">Forum</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/posts/">Blog</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="../accounts/logout">Log Out</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="../accounts/login">Log In</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+    {% if user.is_authenticated %}
+
+    <br>
+
+    <div id="hidden-div" style="display: none;">
+      {{ps.problem_name | safe}}
+      </div>
+
+    <div class="jumbotron" style="width:90%; margin: 0 auto; box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);" >
+
+    <div>
+    {{ps.problem_name | safe}}
+    </div>
+    <br>
+    <div>
+      <label for="problem name" style="font-weight: 600; font-size:1.3rem;">Problem statement:</label>
+      <div style="padding: 15px; background-color:white;">{{ ps.problem | safe}}</div>
+    </div>
+    <br>
+    <div>
+      <label for="problem name" style="font-weight: 600; font-size:1.3rem;">Example:</label>
+      <div style="padding: 15px; background-color:white;">{{ ps.example | safe}}</div>
+    </div>
+    <br>
+    <div>
+      <label for="problem name" style="font-weight: 600; font-size:1.3rem;">Input Format:</label>
+      <div style="padding: 15px; background-color:white;">{{ ps.input_format | safe}}</div>
+    </div>
+    <br>
+    <div>
+      <label for="problem name" style="font-weight: 600; font-size:1.3rem;">Output Format:</label>
+      <div style="padding: 15px; background-color:white;">{{ ps.output_format | safe}}</div>
+    </div>
+
+    </div>
+
+    <br><br>
+
+    <section id="IDE">
+
+    <div style="width: 50%; margin: 0 auto;">
+      <div style="text-align: center;">
+        <label for="languages" style="font-size: 1.2rem; font-weight:500">Choose a programming language:</label>
+
+      <select id="languages" onchange="getter(this)">
+          <option value="python">Python 3</option>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+      </select>
+      </div>
+    </div>
+
+    <div style="width: 50%; margin: 0 auto;">
+      <div style="text-align: center;">
+        <label for="themes" style="font-size: 1.2rem; font-weight:500">Theme:</label>
+
+    <select id="themes" onchange="gettertheme(this)">
+        <option value="clouds">Light</option>
+        <option value="twilight">Dark</option>
+    </select>
+      </div>
+    </div>
+
+
+    <div style="width: 50%; margin: 0 auto; text-align:center;">
+    <p>Write everything from scratch and <strong>print the output</strong></p>
+    </div>
+
+    <div id="parent">
+        <div id="editor"></div>
+    </div>
+
+    <br>
+
+    <div style="text-align: center; margin: 0 auto;">
+      <button id="run-btn" class="btn btn-primary" style="margin-right: 20px;">Run Code</button>
+      <button id="sbmt-btn" class="btn btn-primary" style="margin-left: 20px;">Submit Code</button>
+      <img src="{% static 'tick.png' %}" id="tick-img"><p></p>
+    </div>
+    <br>
+
+
+    <img src="{% static 'loading.gif' %}" alt="loading">
+
+    <br><br>
+    <div style="text-align: center;">
+      <h2 style="margin-top: 0px;">Output</h2>
+    </div>
+
+    <div id="output">
+        <pre>
+            Output will appear here..
+        </pre>
+    </div>
+
+    </section>
+
+    <br>
+    <br>
+
+    {% else %}
+
+    <br><br>
+
+    <a href="/../../accounts/login"><h2>Please log in first</h2></a>
+
+
+    {% endif %}
+
+    <footer style="background-color: black; text-align:center;">
+      <br>
+      <h6 style="color: white;"><a href="https://linkedin.com/in/tejasmandre"
+          style="text-decoration: none; color: white;">© Tejas Mandre MIT SOE</a></h6>
+      <br>
+    </footer>
+
+<script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script >var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/clouds");
+  editor.session.setMode("ace/mode/python");
+  editor.resize()
+  editor.setOptions({
+      fontSize: "14pt"
+    });
+  var sendCode = null;
+  var language = "python";
+  var psname = document.getElementById("hidden-div").innerText;
+  var runOrSubmit = "run";
+
+  function getter(drop_down) {
+      language = drop_down.value;
+      if(language == 'c' || language == 'cpp') {
+          editor.session.setMode("ace/mode/" + 'c_cpp');
+      }
+      else {
+          editor.session.setMode("ace/mode/" + language);
+      }
+  }
+
+  function gettertheme(drop_down) {
+      var theme = drop_down.value;
+      editor.setTheme("ace/theme/" + theme);
+  }
+
+  function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+
+
+
+  document.querySelector("#sbmt-btn").addEventListener("click", function() {
+      document.getElementsByTagName("img")[2].style.display = "block";
+      var submission = editor.getValue();
+      runOrSubmit = "submit";
+      var sendcode = {
+          cmd: runOrSubmit,
+          pname: psname,
+          lang: language,
+          code: submission
+      }
+      fetch(`${window.origin}` + "/codestrike/submitsolution/", {
+          method: "POST",
+          credentials: "include",
+          cache: "no-cache",
+          body: JSON.stringify(sendcode),
+          headers: new Headers({
+              'content-type': 'application/json',
+              'X-CSRFToken': getCookie('csrftoken')
+          })
+      })
+      .then (function() {
+          document.getElementsByTagName("img")[2].style.display = "none";
+          document.getElementsByTagName("img")[1].style.display = "inline";
+      })
+
+  })
+
+    var navbar  = document.querySelector('nav');
+    window.addEventListener("resize", function () {
+        var w = document.documentElement.clientWidth;
+        if(w < 900) {
+            navbar.classList.add('sticky-top');
+        }
+        else {
+            navbar.classList.remove('sticky-top');
+        }
+    })
+
+
+  document.querySelector("#run-btn").addEventListener("click", function() {
+      document.getElementsByTagName("img")[2].style.display = "block";
+      var submission = editor.getValue();
+      runOrSubmit = "run"
+      var sendcode = {
+          cmd: runOrSubmit,
+          pname: psname,
+          lang: language,
+          code: submission
+      }
+      fetch(`${window.origin}` + "/codestrike/submitsolution/", {
+          method: "POST",
+          credentials: "include",
+          cache: "no-cache",
+          body: JSON.stringify(sendcode),
+          headers: new Headers({
+              'content-type': 'application/json',
+              'X-CSRFToken': getCookie('csrftoken')
+          })
+      })
+      .then (function(response) {
+          response.json().then(function (data) {
+              document.querySelector("pre").innerText = data['res'];
+          })
+      })
+      .then (function() {
+          document.getElementsByTagName("img")[2].style.display = "none";
+      })
+  })</script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>

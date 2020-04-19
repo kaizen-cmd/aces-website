@@ -1,0 +1,243 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="shortcut icon"
+      href="{% static 'favicon.ico' %}"
+      type="image/x-icon"
+    />
+    <title>ACES-AboutUs</title>
+  </head>
+
+  <style>
+    body:before {
+    content: "";
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    background: url("{% static 'homepagebg.jpg' %}") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+    html ::-webkit-scrollbar {
+      display: none;
+    }
+
+    .navbar img {
+      width: 40px;
+    }
+
+    .navbar {
+      padding: 10px 0px;
+    }
+
+    .nav-link {
+      font-size: 1.3rem;
+    }
+
+    .navbar-container {
+      z-index: 20;
+      margin: 0px auto;
+      position: fixed;
+      padding: 10px 0px;
+    }
+
+    .add-black {
+      background-color: black;
+    }
+
+    .nav-item {
+      padding: 0px 30px;
+    }
+
+    .navbar-brand img {
+      width: 50px;
+    }
+
+    .top-content {
+      padding: 100px 0px;
+      color: rgb(209, 209, 209);
+      text-align: center;
+    }
+
+    .top-content p {
+      font-family: "Montserrat";
+      font-size: 1.3rem;
+      line-height: 2;
+    }
+
+    .col-lg-3 img {
+      width: 150px;
+      border-radius: 50%;
+    }
+
+    .col-lg-3 {
+      text-align: center;
+    }
+
+    .carousel-img {
+      height: 610px;
+    }
+
+    .event-carousel {
+      padding-top: 50px;
+      text-align: center;
+    }
+
+    h2 {
+      color: white;
+    }
+
+    @media screen and (max-width: 900px) {
+      .navbar-container {
+        background-color: black;
+      }
+
+      .col-lg-3 img {
+        width: 100px;
+      }
+
+      .carousel-img {
+        height: 200px;
+      }
+
+      .keyboard-bg {
+        height: 500px;
+      }
+    }
+
+    h6 {
+      color: white;
+    }
+  </style>
+
+  <body>
+    <section class="container-fluid navbar-container">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+          <a class="navbar-brand" href="/"
+            ><img src="{% static 'aceslogo.png' %}"
+          /></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/blog/posts">Blog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/events">Events</a>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/logout">Log Out</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/register">Become Aces</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/login">Log In</a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="/aboutus">About us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/discussion">Forum</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <div class="container-fluid asus-bg">
+      <div class="container top-content">
+        <br /><br />
+        <h3>Reach us at:</h3>
+        <a href="mailto: aces@gmail.com"><p>aces@gmail.com</p></a>
+        <a class="nav-link" href="/discussion">Head to our Forum</a>
+        <br />
+        <h1>Our Mission</h1>
+        <p>{{about.mission | safe}}</p>
+        <br />
+        <h1>Our Vision</h1>
+        <p>{{about.vision | safe}}</p>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(window).scroll(function () {
+        if ($(document).scrollTop() > 50) {
+          $(".navbar-container").addClass("add-black");
+        } else {
+          $(".navbar-container").removeClass("add-black");
+        }
+      });
+
+      $(".navbar-toggler").click(function () {
+        $(".navbar-container").toggleClass("add-black");
+      });
+
+      var navbar = document.querySelector("nav");
+      window.addEventListener("resize", function () {
+        var w = document.documentElement.clientWidth;
+        if (w < 900) {
+          navbar.classList.add("sticky-top");
+        } else {
+          navbar.classList.remove("sticky-top");
+        }
+      });
+    </script>
+  </body>
+</html>

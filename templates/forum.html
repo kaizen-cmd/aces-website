@@ -1,0 +1,290 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="shortcut icon"
+      href="{% static 'favicon.ico' %}"
+      type="image/x-icon"
+    />
+    <title>ACES-Forum</title>
+  </head>
+
+  <style>
+    .hidden {
+      display: none;
+    }
+
+    body:before {
+    content: "";
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    background: url("{% static 'homepagebg.jpg' %}") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+    html ::-webkit-scrollbar {
+      display: none;
+    }
+
+    .navbar img {
+      width: 40px;
+    }
+
+    .navbar {
+      padding: 10px 0px;
+    }
+
+    .nav-link {
+      font-size: 1.3rem;
+    }
+
+    .navbar-container {
+      z-index: 20;
+      margin: 0px auto;
+      position: fixed;
+      padding: 10px 0px;
+    }
+
+
+    .nav-item {
+      padding: 0px 30px;
+    }
+
+    .navbar-brand img {
+      width: 50px;
+    }
+
+    .top-content {
+      padding: 100px 0px;
+      color: rgb(209, 209, 209);
+      text-align: center;
+    }
+
+    .top-content p {
+      font-family: "Montserrat";
+      font-size: 1.1rem;
+      line-height: 2;
+    }
+
+    h2 {
+      color: white;
+    }
+
+    .post {
+      border: grey solid 0.5px;
+    }
+
+    textarea {
+      border-bottom: 2px grey solid;
+      background-color: transparent;
+      outline: none;
+      color: white;
+      width: 700px;
+      height: 200px;
+    }
+
+    textarea:focus {
+      outline: none;
+      border: 1px red solid;
+    }
+
+    .navbar-container {
+        background-color: black;
+    }
+
+    @media screen and (max-width: 900px) {
+        textarea {
+      border-bottom: 2px grey solid;
+      background-color: transparent;
+      outline: none;
+      color: white;
+      width: 300px;
+      height: 200px;
+    }
+    }
+  </style>
+
+  <body>
+    <section class="container-fluid navbar-container add-black">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+          <a class="navbar-brand" href="/"
+            ><img src="{% static 'aceslogo.png' %}"
+          /></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/blog/posts">Blog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/events">Events</a>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/logout">Log Out</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/register">Become Aces</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/login">Log In</a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="/aboutus">About us</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <div class="container top-content">
+      {% for i in all_discussions %}
+      <div class="post">
+        <h6>{{i.name}}</h6>
+        <p>{{i.msg}}</p>
+        <h6>{{i.date}}</h6>
+      </div>
+      <br /><br />
+      {% endfor %}
+
+      <div class="dis-div"></div>
+
+      <br /><br />
+
+      {% if user.is_authenticated %}
+      <div class="hidden">{{user.username}}</div>
+      <h5>Write here</h5>
+      <textarea class="textip"></textarea>
+      <br />
+      <button class="btn btn-success btn-md button-post">Post</button>
+      {% else %}
+      <a href="/accounts/login"><p>Please Login to discuss</p></a>
+      {% endif %}
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          var cookies = document.cookie.split(";");
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      $(".button-post").click(function () {
+        var msg = document.querySelector('textarea').value;
+        document.querySelector('textarea').value = null;
+        var send = {
+          msg: msg,
+        };
+
+        fetch(`${window.origin}` + "/discussion/", {
+          method: "POST",
+          credentials: "include",
+          cache: "no-cache",
+          body: JSON.stringify(send),
+          headers: new Headers({
+            "content-type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"),
+          }),
+        }).then(function (response) {
+          response.json().then(function (data) {
+            item =
+              "<div class='disc'>"+
+              "<h6>" +
+              `${data["name"]}` +
+              "</h6>" +
+              "<p>" +
+              `${data["msg"]}` +
+              "</p>" +
+              "<h6>" +
+              `${data["date"]}` +
+              "</h6>"+
+              "</div>" +
+              "<br><br>";
+            $(".dis-div").append(item);
+            $(".disc").addClass("post");
+          });
+        });
+      });
+
+
+
+
+      var navbar = document.querySelector("nav");
+      window.addEventListener("resize", function () {
+        var w = document.documentElement.clientWidth;
+        if (w < 900) {
+          navbar.classList.add("sticky-top");
+        } else {
+          navbar.classList.remove("sticky-top");
+        }
+      });
+    </script>
+  </body>
+</html>
