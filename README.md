@@ -1,7 +1,3 @@
-# codestrike
-This is an online coding platform named codestrike.
-It is has a dynmaic admin panel from where questions, blogposts and many other things can be added.
-Code editor is built in and the code gets compiled in the cloud itslef.
-This website is written using python, javascript, html, css.
-Gunicorn is used as a webserver for serving the clients.
-This has a very simple UI and a user-friendly experience.
+# ACES WEBSITE
+ACES WEBSITE is a powerful web application of ASSOCIATION OF COMPUTER ENGINEERING STUDENTS of MIT SOE.
+You can see it live at https://aces.pythonanywhere.com 
